@@ -1,3 +1,4 @@
+import { signIn } from 'next-auth/react';
 import Image from 'next/image'
 import styles from './Login.module.scss'
 import Logo from '/public/assets/logo.svg'
@@ -17,7 +18,7 @@ export function Login() {
                 Gmail
             </button>
 
-            <button className={styles.login__main__button}>
+            <button onClick={() => signIn('github')} className={styles.login__main__button}>
                 <GitHub sx={{fontSize: 20, lineHeight: 20}} />
                 Github
             </button>
