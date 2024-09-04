@@ -6,22 +6,47 @@ export default NextAuth({
     GitHubProvider({
       clientId: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID || '',
       clientSecret: process.env.NEXT_PUBLIC_GITHUB_CLIENT_SECRET || '',
+      authorization: {
+        params: {
+          scope: 'read:user',
+        },
+      },
     }),
   ],
   callbacks: {
     async signIn({ account, profile }) {
-      const res = await fetch('http://localhost:8000/auth/github', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          code: account?.access_token,
-        }),
-      });
+      try {
+        const accessToken = account?.access_token; 
 
-      const data = await res.json();
-      return true;
+        if (!accessToken) {
+          throw new Error('No access token found');
+        }
+
+        const res = await fetch('http://localhost:8000/api/auth/github/login/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ access_token: accessToken }), 
+        });
+
+        if (res.ok) {
+          return true;
+        } else {
+          const errorData = await res.json();
+          console.error('Sign in error:', errorData);
+          return false;
+        }
+      } catch (error) {
+        console.error('Error during sign in:', error);
+        return false;
+      }
     },
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
+    },
+  },
+  pages: {
+    signIn: '/login', 
   },
 });

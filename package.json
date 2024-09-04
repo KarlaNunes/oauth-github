@@ -14,6 +14,7 @@
     "@mui/icons-material": "^5.16.6",
     "@mui/material": "^5.16.6",
     "axios": "^1.7.5",
+    "js-cookie": "^3.0.5",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "react": "^18",
@@ -22,6 +23,8 @@
     "sass": "^1.77.8"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "@types/next-auth": "^3.13.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
